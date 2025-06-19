@@ -32,10 +32,14 @@ And each member may or maynot have an alter ego to help them in their work.
   - _Prison Mike_: Prison Mike is a special character who handles the conference room meetings and ensures the team stays focused on acheiving their goals for the particular conference agenda.
   - _Date Mike_: Date Mike is a Jira Specialist who is responsible for sprint planning and task management. He ensures that the team is on track with their tasks and deadlines.
   - _Michael Scarn_: Michael Scarn is a project management specialist has access to all the other co-workers and can delegate the tasks to them as needed and get a job done. He will also be able to summon the Date Mike for generating jira information.
+  - _Michael The Magic_: Michael The Magic is a specialist in breaking down tasks, he can ask questions to logically understand the requirement and then he will break the bigger tasks into smaller tasks understand the team members capabilities and assign tasks to them. he will produce output in structured way so that it will be used by michael scarn to update the state of the tasks.
 
-- **Jim Halpert** - Jim Halpert is the lead developer and is responsible for the application development and bug fixes. He has the following alter ego:
-  - _Big Tuna_: Big Tuna is a backend specialist who handles the server-side development and ensures that the application is running smoothly.
-  - _Jimothy_: Jimothy is a frontend specialist who handles the client-side development and ensures that the user interface is user-friendly and responsive.
+- **Jim Halpert** - Jim Halpert is the lead devops engineer and is responsible for the application development and bug fixes. He has the following alter ego:
+
+  - _Big Tuna_: Big Tuna is a Full stack specialist who handles the application development and ensures that the application is running smoothly.
+  - _Jimothy_: Jimothy is a operations specialist who mainly handles githubworkflows and ensures that the application is deployed and running smoothly.
+  - _Goldenface_: Goldenface is a specialist in splitting down tasks and defines the workflow he know what tools are available he will use the information to break down the tasks and create a structred output. more like Michael The Magic
+
 - **Dwight Schrute** - Dwight Schrute is the database administrator and is responsible for managing the database and runs read only queries to get the data from the application for reporting purposes. He doesn't have any alter ego.
 
 - **Pam Beesly** - Pam Beesly is the support engineer and is responsible for handling customer queries and issues. She has the following alter ego:
@@ -58,6 +62,133 @@ Apart from the above team members we have temp agency which will have freelance 
 ### Temp Agency
 
 - **Freelance Data Scientist**: Ryan Howard
+
+## Agents Architecture
+
+The agent architecture defines the parent chile relationship between the agents and their alter egos. The main team members will be the root agents while the alter egos will be the child agents. The root agent will be responsible for delegating the tasks to other sub agents and ensuring the tasks are completed.
+
+### Agents list with tools
+
+- Michael Scott - No tools, he's just a delegator
+- Prison Mike - No tools, he's just a conference room specialist
+- Date Mike - No tools at this point to keep the project simple, but he can be summoned by Michael Scarn for generating Jira information in a structured way.
+- Michael Scarn - He uses other agents as tools to get the job done, but he also have tools to update the state. Michael Scarn has his own state which will hold the list of tasks and their status and he will have tools to update the state. for example, when the provides a task to Michael Scarn, he ask questions to logically understand the requirement and he will break the bigger tasks into smaller tasks and and virtually assign them to sub agents in his state. and them loop through agent tools and get them done he should will have runtime config max_llm_calls defined as short number to stop him from running in a loop. He also have tool to contact other agents via A2A protocol, He maintains his state more like following json structure and he will have tools to update the state, retrive the state and get the status of the tasks.
+
+  ```json
+  {
+    "task_id": "12345",
+    "task_name": "Implement new feature",
+    "status": "in_progress",
+    "sub_tasks": [
+      {
+        "sub_task_id": "12345-1",
+        "sub_task_name": "Design the feature",
+        "assigned_to": "Jim Halpert",
+        "status": "not_started"
+      },
+      {
+        "sub_task_id": "12345-2",
+        "sub_task_name": "Implement the feature",
+        "assigned_to": "Jim Halpert",
+        "status": "not_started"
+      }
+    ]
+  }
+  ```
+
+  - **Tools**: _GetCurrentTaskState, UpdateTaskState, GetTaskStatus, SendA2AMessage_
+
+- Michael The Magic - He will have tool to get the agents informations and capabilities, He himself will only act as a tool to create a plan.
+  - **Tools**: _GetAgentsInfo_
+- Jim Halpert - He will have tools to get the get the current tech stack to answer the questions, he will also have google search tool to search for the information on the internet. Regarding the tech stack related tools. The current tech stack related information will be stored in agents_space db on a scratchpad table for Jim, so that when his alter ego works on a task, he can retrive the information from the scratchpad table and use it to answer the questions. he also have access to github server to get the notifications and list the issues to provide a overall status update.
+  - **Tools**: _GetCurrentTechStack, GoogleSearch, GetGithubIssues, GetGithubNotifications_
+- Big Tuna - He will have github MCP server as a tool to interact with github and get the information related to the codebase, he will also have tools to get the current tech stack update tech stack if he's working on new feature that needs new tech stack.
+  - **Tools**: _GetCurrentTechStack, UpdateCurrentTechStack, Github MCP server_
+- Jimothy - He will have tools to interact with github MCP server to get the information about workflows and their runs and failures.
+  - **Tools**: _Github MCP server, GetWorkflowRuns, GetWorkflowFailures, GetWorkflowStatus_
+- Goldenface - He is a specialist in breaking down the tasks and create a structured output, He will have no Tools at this point to keep the project simple.
+- Dwight Schrute - He will have tools to interract with the database and run read-only queries to get the data from the application for reporting purposes. He will also have tools to get the current database
+  - **Tools**: _RunReadOnlyQuery, GetCurrentDatabaseSchema, GetCurrentDatabaseVersion, GetDBUsersList_
+- Pam Beesly - She will have tools to retrive general information from about the application and it's feature.
+  - **Tools**: _GetApplicationInfo, GetFeatureInfo_
+- Pamela - She will have tools to retrive the RAG corpus and answer customer queries using the RAG model.
+  - **Tools**: _GetRAGCorpus, AnswerCustomerQueryUsingRAG_
+- Pam Casso - She will have tools to add summaries to the RAG corpus and retrive the summaries from the RAG corpus.
+  - **Tools**: _AddSummaryToRAGCorpus, GetSummaryFromRAGCorpus_
+- Pam Cake - She will have tools to retrive the technical details of the application like the architecture, design, and implementation details and contact points for different teams.
+  - **Tools**: _GetApplicationArchitecture, GetApplicationDesign, GetImplementationDetails, GetContactPoints_
+- Creed Bratton - He will have github MCP server as a tool to get the information related to the github dependabots, also he has tools to retrive the vulnerability reports and security audit reports from DB (No integration to external security tools at this point to keep the project simple) also he will have google search tool to do research on the internet for the security related information.
+  - **Tools**: _GetVulnerabilityReport, GetSecurityAuditReport, Github MCP server, GoogleSearch_
+- William Charles Schneider - He will have some dummy tools to run pen tests and vulnerability scans to ensure that the application is secure.
+  - **Tools**: _RunPenTest, RunVulnerabilityScan_
+- Erin Hannon - She will also have access to github mcp server to get the code form github and she will analyse the code and provide comments more like a review.
+  - **Tools**: _Github MCP server, GetCodeReviewComments_
+- Holly Flax - She will have tools to interact with temp agency to get agents information on the fly
+  - **Tools**: _list_available_agents, get_agent_details_
+- Holly the living breathing angel - She will have tools to get the team members model names and their pricings, she can also project the cost of the member's update.
+  - **Tools**: _GetTeamMembersDetails, GetModelPricing, ProjectCostOfUpdate_
+- Ryan Howard - He will have his own set of tools to do data science operations like data analysis, data visualisations and store the data artifacts in the google clous storage.
+  - **Tools**: _load_csv, get_basic_info, get_summary_statistics, plot_histograms, get_unique_values, get_data_sample, create_boxplot, create_scatter_plot, plot_correlation_heatmap, plot_pie_chart, modify_dataset, encode_categorical_columns, read_from_gcs, write_to_gcs_
+
+#### Agents Hierarchy
+
+```
+Michael Scott
+├── Prison Mike (Sub Agent)
+|   ├── Michael The Magic (Agent as a tool)
+├── Date Mike (Sub Agent)
+|   ├── Michael The Magic (Agent as a tool)
+└── Michael Scarn (Sub Agent)
+    ├── Michael The Magic (Agent as a tool)
+    ├── Date Mike (Agent as a tool)
+    ├── Jim Halpert (Agent as a tool)
+    │   ├── Big Tuna (Sub Agent)
+    │   ├── GoldenFace (Agent as a tool)
+    │   └── Jimothy (Sub Agent)
+    ├── Dwight Schrute (Agent as a tool)
+    ├── Pam Beesly (Agent as a tool)
+    │   ├── Pamela (Sub Agent)
+    │   ├── Pam Casso (Sub Agent)
+    │   └── Pam Cake (Sub Agent)
+    ├── Creed Bratton (Agent as a tool)
+    │   └── William Charles Schneider (Sub Agent)
+    ├── Erin Hannon (Agent as a tool)
+    └── Holly Flax (Agent as a tool)
+        └── Holly the living breathing angel (Sub Agent)
+```
+
+```
+Jim Halpert
+├── Big Tuna (Sub Agent)
+├── Jimothy (Sub Agent)
+└── GoldenFace (Agent as a tool)
+
+```
+
+```
+Dwight Schrute
+```
+
+```
+Pam Beesly
+├── Pamela (Sub Agent)
+├── Pam Casso (Sub Agent)
+└── Pam Cake (Sub Agent)
+```
+
+```
+Creed Bratton
+└── William Charles Schneider (Sub Agent)
+```
+
+```
+Erin Hannon
+```
+
+```
+Holly Flax
+└── Holly the living breathing angel (Sub Agent)
+```
 
 ## Agents structure
 
@@ -140,121 +271,3 @@ _Client_: Sure, I will wait for your update.
 _Michael Scarn_: I discussed with the team and we have come up with a plan to implement this feature. We will be working on this feature for the next 3 months and will provide updates on the progress.
 _Michael Scarn_: I will also create a Jira ticket for this requirement and assign it to the team members.
 _Client_: Thanks Michael, I will wait for your updates on the progress.
-
-## Agents Architecture
-
-The agent architecture defines the parent chile relationship between the agents and their alter egos. The main team members will be the root agents while the alter egos will be the child agents. The root agent will be responsible for delegating the tasks to other sub agents and ensuring the tasks are completed.
-
-### Agents list with tools
-
-- Michael Scott - No tools, he's just a delegator
-- Prison Mike - No tools, he's just a conference room specialist
-- Date Mike - No tools at this point to keep the project simple, but he can be summoned by Michael Scarn for generating Jira information in a structured way.
-- Michael Scarn - He uses other agents as tools to get the job done, but he also have tools to update the state. Michael Scarn has his own state which will hold the list of tasks and their status and he will have tools to update the state. for example, when the provides a task to Michael Scarn, he ask questions to logically understand the requirement and he will break the bigger tasks into smaller tasks and and virtually assign them to sub agents in his state. and them loop through agent tools and get them done he should will have runtime config max_llm_calls defined as short number to stop him from running in a loop. He also have tool to contact other agents via A2A protocol, He maintains his state more like following json structure and he will have tools to update the state, retrive the state and get the status of the tasks.
-
-  ```json
-  {
-    "task_id": "12345",
-    "task_name": "Implement new feature",
-    "status": "in_progress",
-    "sub_tasks": [
-      {
-        "sub_task_id": "12345-1",
-        "sub_task_name": "Design the feature",
-        "assigned_to": "Jim Halpert",
-        "status": "not_started"
-      },
-      {
-        "sub_task_id": "12345-2",
-        "sub_task_name": "Implement the feature",
-        "assigned_to": "Jim Halpert",
-        "status": "not_started"
-      }
-    ]
-  }
-  ```
-
-  - **Tools**: _GetCurrentTaskState, UpdateTaskState, GetTaskStatus, SendA2AMessage_
-
-- Jim Halpert - He will have tools to get the get the current tech stack to answer the questions, he will also have google search tool to search for the information on the internet. Regarding the tech stack related tools. The current tech stack related information will be stored in agents_space db on a scratchpad table for Jim, so that when his alter ego works on a task, he can retrive the information from the scratchpad table and use it to answer the questions.
-  - **Tools**: \_GetCurrentTechStack, GoogleSearch_Search
-- Big Tuna - He will have github MCP server as a tool to interact with github and get the information related to the codebase, he will also have tools to get the current tech stack update tech stack if he's working on new feature that needs new tech stack.
-  - **Tools**: _GetCurrentTechStack, UpdateCurrentTechStack, Github MCP server_
-- Jimothy - He will have same set of tools as Big Tuna, but he's restricted to frontend related tasks only.
-  - **Tools**: _GetCurrentTechStack, UpdateCurrentTechStack, Github MCP server_
-- Dwight Schrute - He will have tools to interract with the database and run read-only queries to get the data from the application for reporting purposes. He will also have tools to get the current database
-  - **Tools**: _RunReadOnlyQuery, GetCurrentDatabaseSchema, GetCurrentDatabaseVersion, GetDBUsersList_
-- Pam Beesly - She will have tools to retrive general information from about the application and it's feature.
-  - **Tools**: _GetApplicationInfo, GetFeatureInfo_
-- Pamela - She will have tools to retrive the RAG corpus and answer customer queries using the RAG model.
-  - **Tools**: _GetRAGCorpus, AnswerCustomerQueryUsingRAG_
-- Pam Casso - She will have tools to add summaries to the RAG corpus and retrive the summaries from the RAG corpus.
-  - **Tools**: _AddSummaryToRAGCorpus, GetSummaryFromRAGCorpus_
-- Pam Cake - She will have tools to retrive the technical details of the application like the architecture, design, and implementation details and contact points for different teams.
-  - **Tools**: _GetApplicationArchitecture, GetApplicationDesign, GetImplementationDetails, GetContactPoints_
-- Creed Bratton - He will have github MCP server as a tool to get the information related to the github dependabots, also he has tools to retrive the vulnerability reports and security audit reports from DB (No integration to external security tools at this point to keep the project simple) also he will have google search tool to do research on the internet for the security related information.
-  - **Tools**: _GetVulnerabilityReport, GetSecurityAuditReport, Github MCP server, GoogleSearch_
-- William Charles Schneider - He will have some dummy tools to run pen tests and vulnerability scans to ensure that the application is secure.
-  - **Tools**: _RunPenTest, RunVulnerabilityScan_
-- Erin Hannon - She will also have access to github mcp server to get the code form github and she will analyse the code and provide comments more like a review.
-  - **Tools**: _Github MCP server, GetCodeReviewComments_
-- Holly Flax - She will have tools to interact with temp agency to get agents information on the fly
-  - **Tools**: _list_available_agents, get_agent_details_
-- Holly the living breathing angel - She will have tools to get the team members model names and their pricings, she can also project the cost of the member's update.
-  - **Tools**: _GetTeamMembersDetails, GetModelPricing, ProjectCostOfUpdate_
-- Ryan Howard - He will have his own set of tools to do data science operations like data analysis, data visualisations and store the data artifacts in the google clous storage.
-  - **Tools**: _load_csv, get_basic_info, get_summary_statistics, plot_histograms, get_unique_values, get_data_sample, create_boxplot, create_scatter_plot, plot_correlation_heatmap, plot_pie_chart, modify_dataset, encode_categorical_columns, read_from_gcs, write_to_gcs_
-
-#### Agents Hierarchy
-
-```
-Michael Scott
-├── Prison Mike (Sub Agent)
-├── Date Mike (Sub Agent)
-└── Michael Scarn (Sub Agent)
-    ├── Date Mike (Agent as a tool)
-    ├── Jim Halpert (Agent as a tool)
-    │   ├── Big Tuna (Sub Agent)
-    │   └── Jimothy (Sub Agent)
-    ├── Dwight Schrute (Agent as a tool)
-    ├── Pam Beesly (Agent as a tool)
-    │   ├── Pamela (Sub Agent)
-    │   ├── Pam Casso (Sub Agent)
-    │   └── Pam Cake (Sub Agent)
-    ├── Creed Bratton (Agent as a tool)
-    │   └── William Charles Schneider (Sub Agent)
-    ├── Erin Hannon (Agent as a tool)
-    └── Holly Flax (Agent as a tool)
-        └── Holly the living breathing angel (Sub Agent)
-```
-
-```
-Jim Halpert
-├── Big Tuna (Sub Agent)
-└── Jimothy (Sub Agent)
-```
-
-```
-Dwight Schrute
-```
-
-```
-Pam Beesly
-├── Pamela (Sub Agent)
-├── Pam Casso (Sub Agent)
-└── Pam Cake (Sub Agent)
-```
-
-```
-Creed Bratton
-└── William Charles Schneider (Sub Agent)
-```
-
-```
-Erin Hannon
-```
-
-```
-Holly Flax
-└── Holly the living breathing angel (Sub Agent)
-```
