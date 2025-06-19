@@ -1,0 +1,9 @@
+[project]
+name = "dunder-mifflin-mcp"
+version = "0.1.0"
+description = "MCP server for agents in dunder-mifflin aimed for cloudrun deployment"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=2.8.1",
+    "mcp[cli]>=1.9.4",
+]

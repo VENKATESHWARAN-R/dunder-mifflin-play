@@ -52,10 +52,10 @@ def main():
 
     # print("Creating the Michael Scott agent engine...")
 
-    # remote_app = agent_engines.create(
-    #     agent_engine=michael_scott_agent,
-    #     requirements=["google-cloud-aiplatform[adk,agent_engines]", "python-dotenv>=1.1.0"],
-    # )
+    remote_app = agent_engines.create(
+        agent_engine=michael_scott_agent,
+        requirements=["google-cloud-aiplatform[adk,agent_engines]", "python-dotenv>=1.1.0"],
+    )
 
     # print("Michael Scott agent engine created successfully.")
     # print(remote_app.resource_name)
