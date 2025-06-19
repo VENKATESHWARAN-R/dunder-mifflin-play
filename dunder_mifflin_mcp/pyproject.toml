@@ -6,4 +6,5 @@ requires-python = ">=3.12"
 dependencies = [
     "fastmcp>=2.8.1",
     "mcp[cli]>=1.9.4",
+    "httpx>=0.28.1",
 ]

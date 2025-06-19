@@ -7,8 +7,6 @@ from typing import Dict, Any
 
 import httpx
 
-from dunder_mifflin_mcp.config import settings
-
 logger = logging.getLogger("holly-flax-tools")
 
 
@@ -18,9 +16,13 @@ class TempAgencyTools:
     Holly uses these tools to find suitable agents for various tasks.
     """
 
-    def __init__(self):
-        """Initialize the temp agency tools with the API endpoint."""
-        self.temp_agency_url = settings.holly.temp_agency_url
+    def __init__(self, temp_agency_url: str):
+        """Initialize the temp agency tools with the API endpoint.
+
+        Args:
+            temp_agency_url (str): The base URL of the temp agency API.
+        """
+        self.temp_agency_url = temp_agency_url
         self.client = httpx.Client(timeout=10.0)
 
     def list_available_agents(self) -> Dict[str, Any]:
