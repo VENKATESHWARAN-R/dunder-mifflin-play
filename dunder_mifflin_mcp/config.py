@@ -21,6 +21,9 @@ class CommonConfig:
     log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
     host: str = field(default_factory=lambda: os.getenv("HOST", "0.0.0.0"))
     port: int = field(default_factory=lambda: int(os.getenv("PORT", "8080")))
+    agents_database_url: str = field(
+        default_factory=lambda: os.getenv("DATABASE_URL", "postgresql+psycopg2://user:pass@localhost:5432/yourdb")
+    )
 
 
 @dataclass
@@ -29,11 +32,11 @@ class HollyConfig:
     Configuration for Holly Flax
     """
 
-    temp_agency_url: str | None = field(
-        default_factory=lambda: os.getenv("TEMP_AGENCY_URL", None)
+    temp_agency_url: str = field(
+        default_factory=lambda: os.getenv("TEMP_AGENCY_URL", "http://localhost:8000")
     )
-    database_url: str | None = field(
-        default_factory=lambda: os.getenv("DATABASE_URL", None)
+    database_url: str = field(
+        default_factory=lambda: os.getenv("DATABASE_URL", "postgresql+psycopg2://user:pass@localhost:5432/yourdb")
     )
 
 
