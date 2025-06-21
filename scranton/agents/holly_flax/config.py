@@ -6,18 +6,12 @@ import os
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
-try:
-    from scranton.agents.holly_flax.prompts import (
-        get_agent_instruction,
-        get_agent_description,
-    )
-except ImportError as e:
-    # Fallback import if the prompts module is not found
-    from .prompts import get_agent_instruction, get_agent_description
-# from scranton.agents.holly_flax.prompts import (
-#     get_agent_instruction,
-#     get_agent_description,
-# )
+from google.adk.agents.run_config import RunConfig, StreamingMode
+
+from holly_flax.prompts import (  # pylint: disable=E0401
+    get_agent_instruction,
+    get_agent_description,
+)
 
 load_dotenv()
 
@@ -37,6 +31,16 @@ class AgentConfig:
     mcp_server_url: str = field(
         default_factory=lambda: os.getenv("MCP_SERVER_URL", "http://localhost:8080/sse")
     )
+    agent_runtime_config: RunConfig = field(
+        default_factory=lambda: RunConfig(
+            streaming_mode=StreamingMode.SSE
+            if os.getenv("STREAMING_MODE", "").upper() == "SSE"
+            else StreamingMode.NONE,
+            max_llm_calls=int(
+                os.getenv("MAX_LLM_CALLS", "25")
+            ),  # This defines the maximum number of LLM calls the agent can make in single inference
+        )
+    )
     # <-- End of common settings
 
     # --> Agent specific settings
@@ -54,5 +58,6 @@ class AgentConfig:
         default_factory=lambda: os.getenv("HOLLY_MODEL_ID", "gemini-2.0-flash-lite")
     )
     # <-- End of agent specific settings
+
 
 settings = AgentConfig()

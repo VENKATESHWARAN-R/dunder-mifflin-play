@@ -1,0 +1,6 @@
+# Docker ignore file
+
+#ignore env files
+.env
+# Ignore python cache files
+__pycache__

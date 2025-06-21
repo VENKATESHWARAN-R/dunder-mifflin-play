@@ -3,15 +3,15 @@ Root agent module for Holly Flax.
 Holly Flax herself will handle the checking with temp agency on new recruitments.
 """
 
-import logging
-
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
 
-from holly_flax.config import settings # pylint: disable=E0401
-from holly_flax.holly_the_living_breathing_angel.agent import root_agent as angel_root_agent # pylint: disable=E0401
+from holly_flax.config import settings  # pylint: disable=E0401
+from holly_flax.holly_the_living_breathing_angel.agent import (  # pylint: disable=E0401
+    root_agent as angel_root_agent,
+)
 
 
 root_agent = LlmAgent(

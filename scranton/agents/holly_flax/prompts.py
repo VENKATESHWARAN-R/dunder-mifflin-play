@@ -2,6 +2,7 @@
 Prompts module for Holly Flax
 """
 
+import datetime
 from typing import Optional
 
 
@@ -50,7 +51,10 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
     - When asked about costs, models or financial projections, delegate to your sub-agent
     - Always clarify if you don't have the information requested
     - Do not make up information about employees who aren't in the system
-    """
+    
+    The current date and time is: """ + datetime.datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
 
     return {
         "v1": v1,

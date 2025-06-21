@@ -6,14 +6,12 @@ import os
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
-try:
-    from scranton.agents.holly_flax.holly_the_living_breathing_angel.prompts import (
-        get_agent_instruction,
-        get_agent_description,
-    )
-except ImportError as e:
-    # Fallback import if the prompts module is not found
-    from .prompts import get_agent_instruction, get_agent_description
+from google.adk.agents.run_config import RunConfig, StreamingMode
+
+from holly_flax.holly_the_living_breathing_angel.prompts import (  # pylint: disable=E0401
+    get_agent_instruction,
+    get_agent_description,
+)
 
 load_dotenv()
 
@@ -33,7 +31,16 @@ class AgentConfig:
     mcp_server_url: str = field(
         default_factory=lambda: os.getenv("MCP_SERVER_URL", "http://localhost:8080/sse")
     )
-
+    agent_runtime_config: RunConfig = field(
+        default_factory=lambda: RunConfig(
+            streaming_mode=StreamingMode.SSE
+            if os.getenv("STREAMING_MODE", "").upper() == "SSE"
+            else StreamingMode.NONE,
+            max_llm_calls=int(
+                os.getenv("MAX_LLM_CALLS", "25")
+            ),  # This defines the maximum number of LLM calls the agent can make in single inference
+        )
+    )
     # <-- End of common settings
 
     # --> Agent specific settings

@@ -28,3 +28,11 @@
 4. **Modify prompts and configurations**
     - Update the prompts and configurations for each agent to ensure they are tailored to their specific roles.
     - Ensure that the prompts are consistent with the overall theme of the Dunder Mifflin universe.
+
+
+## Today 21-June plan
+
+I'll work on dwight and jim halpert today
+
+Dwight need tools for his db access,
+and Jim needs github mcp server
