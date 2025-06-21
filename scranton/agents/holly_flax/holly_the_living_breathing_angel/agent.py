@@ -10,11 +10,7 @@ from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
 
-try:
-    from scranton.agents.holly_flax.holly_the_living_breathing_angel.config import settings
-except ImportError as e:
-    # Fallback import if the config module is not found
-    from .config import settings
+from holly_flax.holly_the_living_breathing_angel.config import settings  # pylint: disable=E0401
 
 
 logger = logging.getLogger(__name__)

@@ -10,18 +10,9 @@ from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
 
-try:
-    from scranton.agents.holly_flax.config import settings
+from holly_flax.config import settings # pylint: disable=E0401
+from holly_flax.holly_the_living_breathing_angel.agent import root_agent as angel_root_agent # pylint: disable=E0401
 
-    from scranton.agents.holly_flax.holly_the_living_breathing_angel.agent import (
-        root_agent as angel_root_agent,
-    )
-except ImportError as e:
-    from .config import settings
-    from .holly_the_living_breathing_angel.agent import root_agent as angel_root_agent
-
-logger = logging.getLogger(__name__)
-logger.setLevel(settings.log_level.upper())
 
 root_agent = LlmAgent(
     name="holly_flax",
