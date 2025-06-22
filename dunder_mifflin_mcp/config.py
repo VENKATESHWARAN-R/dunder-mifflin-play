@@ -16,13 +16,22 @@ class CommonConfig:
     """
 
     app_name: str = field(
-        default_factory=lambda: os.getenv("APP_NAME", "Dunder_Mifflin_Play")
+        default_factory=lambda: os.getenv("APP_NAME", "Dunder_Mifflin_Play_MCP")
     )
+    frontend_url: str = field(
+        default_factory=lambda: os.getenv(
+            "FRONTEND_URL",
+            "https://subscription-frontend.app",
+        )
+    ) # This will not be used just for a dummy refernce
+    api_key: str | None = field(default_factory=lambda: os.getenv("API_KEY", None))
     log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
     host: str = field(default_factory=lambda: os.getenv("HOST", "0.0.0.0"))
     port: int = field(default_factory=lambda: int(os.getenv("PORT", "8080")))
     agents_database_url: str = field(
-        default_factory=lambda: os.getenv("DATABASE_URL", "postgresql+psycopg2://user:pass@localhost:5432/yourdb")
+        default_factory=lambda: os.getenv(
+            "DATABASE_URL", "postgresql+psycopg2://user:pass@localhost:5432/yourdb"
+        )
     )
 
 
@@ -36,7 +45,9 @@ class HollyConfig:
         default_factory=lambda: os.getenv("TEMP_AGENCY_URL", "http://localhost:8000")
     )
     database_url: str = field(
-        default_factory=lambda: os.getenv("DATABASE_URL", "postgresql+psycopg2://user:pass@localhost:5432/yourdb")
+        default_factory=lambda: os.getenv(
+            "DATABASE_URL", "postgresql+psycopg2://user:pass@localhost:5432/yourdb"
+        )
     )
 
 

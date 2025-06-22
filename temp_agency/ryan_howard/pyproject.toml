@@ -1,0 +1,28 @@
+[project]
+name = "ryan-howard"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "google-adk>=1.2.1",
+    "fastapi>=0.115.12",
+    "a2a-sdk>=0.2.6",
+    "httpx>=0.28.1",
+    "matplotlib>=3.10.3",
+    "pandas>=2.2.3",
+    "python-dotenv>=1.1.0",
+    "uvicorn>=0.34.2",
+    "scikit-learn>=1.7.0",
+    "litellm>=1.72.7",
+    "google-cloud-storage>=2.19.0",
+    "psycopg2-binary>=2.9.10",
+]
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["a2a_server", "agent", "config"]
+packages = ["a2a_configs", "authentication", "tools"]

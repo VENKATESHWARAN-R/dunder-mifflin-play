@@ -4,12 +4,21 @@ Main starup script for the Dunder Mifflin MCP server.
 
 import logging
 from typing import Dict, Any
+
 from mcp.server.fastmcp import FastMCP
+# from fastmcp import FastMCP
+
+# from fastapi import FastAPI, Request
+# from fastapi.responses import JSONResponse
 
 from dunder_mifflin_mcp.config import settings
 from dunder_mifflin_mcp.tools.holly_flax.temp_agency_tools import TempAgencyTools
 from dunder_mifflin_mcp.tools.holly_the_living_breathing_angel.princing_tools import (
     PricingTools,
+)
+from dunder_mifflin_mcp.tools.william_charles_schneider.security_tools import (
+    run_pen_test as _run_pen_test,
+    run_vulnerability_scan as _run_vulnerability_scan,
 )
 
 
@@ -149,12 +158,58 @@ def get_agent_info(agent_name: str) -> Dict[str, Any]:
 # <--- Tools Initialization for Holly the Living Breathing Angel ends
 
 
-# MCP server created above with tools registered using decorators
+# --> Dummy Tools for Creed's sub agent wiiliam charles starts
+@mcp.tool()
+def run_pen_test() -> Dict[str, Any]:
+    """
+    Simulates a penetration test against the frontend (no login) and returns a JSON report.
 
+    Returns:
+        Dict[str, Any]: A JSON report of the penetration test findings.
+    """
+    return _run_pen_test()
+
+
+@mcp.tool()
+def run_vulnerability_scan() -> Dict[str, Any]:
+    """
+    Simulates a vulnerability scan against the Python backend and returns a JSON report.
+
+    Returns:
+        Dict[str, Any]: A JSON report of the vulnerability scan findings.
+    """
+    return _run_vulnerability_scan()
+
+
+# <--- Dummy Tools for Creed's sub agent wiiliam charles ends
+
+
+# # Middleware to check API key for MCP endpoints
+# async def api_key_middleware(request: Request, call_next):
+#     if request.url.path.startswith("/mcp"):
+#         api_key = request.headers.get("X-API-KEY")
+#         if api_key != settings.common.api_key:
+#             return JSONResponse({"detail": "Unauthorized"}, status_code=401)
+#     return await call_next(request)
+
+
+# app = mcp.http_app(
+#     path="/mcp", middleware=[api_key_middleware] if settings.common.api_key else None,
+#     stateless_http=True,
+# )
 
 if __name__ == "__main__":
     logger.info("Starting Dunder Mifflin MCP server")
     logger.info(
         "Server running at http://%s:%s", settings.common.host, settings.common.port
     )
-    mcp.run(transport="sse")  # Start the server with SSE transport
+    mcp.run(
+        transport="streamable-http",
+    )  # Start the server with streamable http transport
+    # import uvicorn
+
+    # uvicorn.run(
+    #     app,
+    #     host="localhost",
+    #     port=8081,
+    # )
