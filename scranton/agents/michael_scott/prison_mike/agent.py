@@ -6,7 +6,7 @@ This agent handles conference room meetings and ensures the team stays focused.
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
+from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
 
 from michael_scott.prison_mike.config import settings  # pylint: disable=E0401
 
@@ -20,7 +20,7 @@ root_agent = LlmAgent(
     sub_agents=[],
     tools=[
         MCPToolset(
-            connection_params=SseServerParams(
+            connection_params=StreamableHTTPConnectionParams(
                 url=settings.mcp_server_url,
                 timeout=60,
             ),

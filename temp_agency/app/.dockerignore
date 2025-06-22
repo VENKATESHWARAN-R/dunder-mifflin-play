@@ -1,0 +1,29 @@
+# Ignore environment files
+.env
+.env.*
+!.env.example
+
+# Ignore Python cache directories
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore Ruff cache
+.ruff_cache/
+
+# Other common files to ignore
+.git
+.gitignore
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.vscode/
+.idea/
+
+# Virtual environments
+venv/
+env/
+ENV/

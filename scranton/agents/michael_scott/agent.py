@@ -6,7 +6,7 @@ Michael Scott is the project manager who oversees the project.
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
+from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
 
 from michael_scott.config import settings  # pylint: disable=E0401
 from michael_scott.prison_mike.agent import (  # pylint: disable=E0401
@@ -30,7 +30,7 @@ root_agent = LlmAgent(
     sub_agents=[prison_mike_root_agent, date_mike_root_agent, michael_scarn_root_agent],
     tools=[
         MCPToolset(
-            connection_params=SseServerParams(
+            connection_params=StreamableHTTPConnectionParams(
                 url=settings.mcp_server_url,
                 timeout=60,
             ),

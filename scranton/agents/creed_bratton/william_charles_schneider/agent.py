@@ -6,7 +6,7 @@ This agent is a security specialist who handles security audits and vulnerabilit
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
+from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
 
 from creed_bratton.william_charles_schneider.config import settings  # pylint: disable=E0401
 
@@ -20,14 +20,16 @@ root_agent = LlmAgent(
     sub_agents=[],
     tools=[
         MCPToolset(
-            connection_params=SseServerParams(
+            connection_params=StreamableHTTPConnectionParams(
                 url=settings.mcp_server_url,
+                headers={
+                    "X-API-Key": settings.mcp_api_key,
+                }
+                if settings.mcp_api_key
+                else None,
                 timeout=60,
             ),
-            tool_filter=[
-                "run_pen_test",
-                "run_vulnerability_scan"
-            ],
+            tool_filter=["run_pen_test", "run_vulnerability_scan"],
         )
     ],
 )

@@ -6,7 +6,7 @@ This agent is a specialist in breaking down tasks logically and assigning them a
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
+from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
 
 from michael_scott.michael_the_magic.config import settings  # pylint: disable=E0401
 
@@ -20,7 +20,7 @@ root_agent = LlmAgent(
     sub_agents=[],
     tools=[
         MCPToolset(
-            connection_params=SseServerParams(
+            connection_params=StreamableHTTPConnectionParams(
                 url=settings.mcp_server_url,
                 timeout=60,
             ),

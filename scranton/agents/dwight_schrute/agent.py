@@ -32,5 +32,7 @@ root_agent = LlmAgent(
         database_tool_set.compare_revenue,
         database_tool_set.calculate_mrr,
         database_tool_set.calculate_churn_rate,
+        database_tool_set.export_invoices_to_gcs,
+        database_tool_set.export_user_subscriptions_to_gcs,
     ],
 )

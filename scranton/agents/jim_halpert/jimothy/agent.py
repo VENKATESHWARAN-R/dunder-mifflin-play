@@ -6,7 +6,7 @@ This agent is an operations specialist focused on GitHub workflows and deploymen
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
+from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
 
 from jim_halpert.jimothy.config import settings  # pylint: disable=E0401
 
@@ -20,16 +20,23 @@ root_agent = LlmAgent(
     sub_agents=[],
     tools=[
         MCPToolset(
-            connection_params=SseServerParams(
-                url=settings.mcp_server_url,
-                timeout=60,
+            connection_params=StreamableHTTPConnectionParams(
+                url=settings.github_mcp_url,
+                headers={
+                    "Authorization": f"Bearer {settings.github_pat_token}"
+                    if settings.github_pat_token
+                    else None
+                },
             ),
             tool_filter=[
-                "github_mcp_server",
-                "get_workflow_runs",
-                "get_workflow_failures",
-                "get_workflow_status"
+                "list_workflows",
+                "list_workflow_runs",
+                "get_workflow_run",
+                "get_workflow_run_logs",
+                "rerun_workflow_run",
+                "rerun_failed_jobs",
+                "cancel_workflow_run",
             ],
-        )
+        ),
     ],
 )

@@ -2,11 +2,14 @@
 This module contains tools for interacting with a database.
 """
 
+import os
 import logging
 from datetime import datetime
 from typing import Any, Dict, Optional
+import csv
 
 from sqlalchemy import inspect
+from google.cloud import storage
 
 from dwight_schrute.tools.database.client import ORMDBClient  # pylint: disable=E0401
 from dwight_schrute.tools.database.models import (  # pylint: disable=E0401
@@ -38,17 +41,19 @@ class DatabaseTools:
         :type database_url: str
         """
         self.database_url = database_url
-        
-    def _validate_and_convert_datetime(self, datetime_string: str) -> Optional[datetime]:
+
+    def _validate_and_convert_datetime(
+        self, datetime_string: str
+    ) -> Optional[datetime]:
         """
         Validates if a string is in ISO format, if not, tries to convert it.
-        
+
         Args:
             datetime_string (str): The datetime string to validate or convert
-            
+
         Returns:
             Optional[datetime]: The parsed datetime object or None if datetime_string is None
-            
+
         Raises:
             ValueError: If the string cannot be parsed or converted
         """
@@ -294,8 +299,16 @@ class DatabaseTools:
         """
         try:
             try:
-                created_after = self._validate_and_convert_datetime(created_after) if created_after else None
-                created_before = self._validate_and_convert_datetime(created_before) if created_before else None
+                created_after = (
+                    self._validate_and_convert_datetime(created_after)
+                    if created_after
+                    else None
+                )
+                created_before = (
+                    self._validate_and_convert_datetime(created_before)
+                    if created_before
+                    else None
+                )
             except ValueError as ve:
                 return {
                     "status": "error",
@@ -400,8 +413,16 @@ class DatabaseTools:
         """
         try:
             try:
-                period_start = self._validate_and_convert_datetime(period_start) if period_start else None
-                period_end = self._validate_and_convert_datetime(period_end) if period_end else None
+                period_start = (
+                    self._validate_and_convert_datetime(period_start)
+                    if period_start
+                    else None
+                )
+                period_end = (
+                    self._validate_and_convert_datetime(period_end)
+                    if period_end
+                    else None
+                )
             except ValueError as ve:
                 return {
                     "status": "error",
@@ -414,10 +435,10 @@ class DatabaseTools:
                     "message": "Invalid status provided. Options are 'active', 'cancelled', or 'expired'.",
                     "results": {},
                 }
-            
+
             # Map the status string to the SubscriptionStatus enum value
             status_enum = getattr(SubscriptionStatus, status.upper())
-            
+
             with ORMDBClient(self.database_url) as db:
                 query = db.session.query(UserSubscription).filter(
                     UserSubscription.status == status_enum
@@ -619,7 +640,7 @@ class DatabaseTools:
                     .filter(
                         UserSubscription.start_date <= as_of_date,
                         UserSubscription.end_date >= as_of_date,
-                        UserSubscription.status == SubscriptionStatus.ACTIVE
+                        UserSubscription.status == SubscriptionStatus.ACTIVE,
                     )
                 )
                 mrr = sum(invoice.amount for invoice in query.all())
@@ -714,3 +735,190 @@ class DatabaseTools:
                 "message": str(e),
                 "results": {},
             }
+
+    def export_invoices_to_gcs(
+        self,
+        bucket_name: str,
+        destination_blob_name: str,
+        start_date: str,
+        end_date: str,
+    ) -> Dict[str, Any]:
+        """
+        Export invoices within a date range to a CSV file and upload it to a GCS bucket.
+
+        Args:
+            bucket_name (str): Name of the GCS bucket to upload to (with or without 'gs://' prefix).
+            destination_blob_name (str): Destination path/name of the blob in the bucket.
+            start_date (str): Start date for filtering invoices (inclusive). ISO or common format.
+            end_date (str): End date for filtering invoices (inclusive). ISO or common format.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing the upload status and the GCS URI, or an error message.
+        """
+        try:
+            # Normalize bucket name
+            clean_bucket = bucket_name.replace("gs://", "").rstrip("/")
+
+            start_dt = self._validate_and_convert_datetime(start_date)
+            end_dt = self._validate_and_convert_datetime(end_date)
+            if start_dt >= end_dt:
+                return {
+                    "status": "error",
+                    "message": self._INVALID_DATE_RANGE_ERROR,
+                    "results": {},
+                }
+
+            # Query invoices and collect data
+            rows = []
+            with ORMDBClient(self.database_url) as db:
+                invoices = (
+                    db.session.query(Invoice)
+                    .filter(
+                        Invoice.invoice_date >= start_dt, Invoice.invoice_date <= end_dt
+                    )
+                    .all()
+                )
+                for inv in invoices:
+                    rows.append(
+                        [
+                            inv.id,
+                            inv.user_subscription_id,
+                            inv.invoice_date.isoformat(),
+                            inv.amount,
+                            inv.status,
+                            inv.created_at.isoformat(),
+                        ]
+                    )
+
+            if not rows:
+                return {
+                    "status": "error",
+                    "message": "No invoices found in the given range.",
+                    "results": {},
+                }
+
+            # Write to CSV
+            local_path = "/tmp/invoices_export.csv"
+            with open(local_path, mode="w", newline="") as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(
+                    [
+                        "id",
+                        "user_subscription_id",
+                        "invoice_date",
+                        "amount",
+                        "status",
+                        "created_at",
+                    ]
+                )
+                writer.writerows(rows)
+
+            # Upload to GCS
+            client = storage.Client()
+            bucket = client.bucket(clean_bucket)
+            blob = bucket.blob(destination_blob_name)
+            blob.upload_from_filename(local_path)
+
+            os.remove(local_path)
+            gcs_uri = f"gs://{clean_bucket}/{destination_blob_name}"
+            return {
+                "status": "success",
+                "message": "Invoices exported and uploaded successfully.",
+                "results": {"gcs_uri": gcs_uri},
+            }
+        except Exception as e:
+            return {"status": "error", "message": str(e), "results": {}}
+
+    def export_user_subscriptions_to_gcs(
+        self,
+        bucket_name: str,
+        destination_blob_name: str,
+        start_date: str,
+        end_date: str,
+    ) -> Dict[str, Any]:
+        """
+        Export user subscriptions within a date range to a CSV file and upload it to a GCS bucket.
+
+        Args:
+            bucket_name (str): Name of the GCS bucket to upload to (with or without 'gs://' prefix).
+            destination_blob_name (str): Destination path/name of the blob in the bucket.
+            start_date (str): Start date for filtering subscriptions (inclusive). ISO or common format.
+            end_date (str): End date for filtering subscriptions (inclusive). ISO or common format.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing the upload status and the GCS URI, or an error message.
+        """
+        try:
+            # Normalize bucket name
+            clean_bucket = bucket_name.replace("gs://", "").rstrip("/")
+
+            start_dt = self._validate_and_convert_datetime(start_date)
+            end_dt = self._validate_and_convert_datetime(end_date)
+            if start_dt >= end_dt:
+                return {
+                    "status": "error",
+                    "message": self._INVALID_DATE_RANGE_ERROR,
+                    "results": {},
+                }
+
+            # Query subscriptions and collect data
+            rows = []
+            with ORMDBClient(self.database_url) as db:
+                subs = (
+                    db.session.query(UserSubscription)
+                    .filter(
+                        UserSubscription.start_date >= start_dt,
+                        UserSubscription.end_date <= end_dt,
+                    )
+                    .all()
+                )
+                for us in subs:
+                    rows.append(
+                        [
+                            us.id,
+                            us.user_id,
+                            us.subscription_id,
+                            us.start_date.isoformat(),
+                            us.end_date.isoformat() if us.end_date else "",
+                            us.status.value,
+                        ]
+                    )
+
+            if not rows:
+                return {
+                    "status": "error",
+                    "message": "No user subscriptions found in the given range.",
+                    "results": {},
+                }
+
+            # Write to CSV
+            local_path = "/tmp/user_subscriptions_export.csv"
+            with open(local_path, mode="w", newline="") as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(
+                    [
+                        "id",
+                        "user_id",
+                        "subscription_id",
+                        "start_date",
+                        "end_date",
+                        "status",
+                    ]
+                )
+                writer.writerows(rows)
+
+            # Upload to GCS
+            client = storage.Client()
+            bucket = client.bucket(clean_bucket)
+            blob = bucket.blob(destination_blob_name)
+            blob.upload_from_filename(local_path)
+
+            os.remove(local_path)
+            gcs_uri = f"gs://{clean_bucket}/{destination_blob_name}"
+            return {
+                "status": "success",
+                "message": "User subscriptions exported and uploaded successfully.",
+                "results": {"gcs_uri": gcs_uri},
+            }
+        except Exception as e:
+            return {"status": "error", "message": str(e), "results": {}}
