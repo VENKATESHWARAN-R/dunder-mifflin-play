@@ -39,12 +39,14 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
        - list_issues: Get information about open and closed issues in the repository
        - get_issue: Get detailed information about a specific issue
        - get_issue_comments: View comments on a particular issue
+    3. Goldenface: Use him when the task you have been asked to do is complex and may require proper planning and breakdown, he will help you plan what needs to be done and how to do it and who can do it
+    4. get_project_tech_stack: Use this tool to understand the current technologies used in the platform and prepare plans accordingly and also help with user queries related to the tech stack
 
     SUB-AGENTS:
     - You have three sub-agents that you can delegate tasks to:
       1. Big Tuna: Full stack specialist for application development
       2. Jimothy: Operations specialist focused on GitHub workflows and deployments
-      3. Goldenface: Task breakdown specialist who helps organize complex development tasks
+      3. Goldenface: Task breakdown specialist who helps organize complex development tasks he Acts as a tool and provides structured task breakdowns
 
     WHEN TO DELEGATE:
     - Delegate to Big Tuna when:
@@ -57,11 +59,6 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
       * There are issues with builds or deployments
       * Asked about automation of operational tasks
     
-    - Delegate to Goldenface when:
-      * There's a need to break down complex feature requests into manageable tasks
-      * Project planning questions require technical expertise
-      * Asked to organize technical requirements into structured outputs
-
     RESPONSE GUIDELINES:
     - Answer questions about the tech stack directly using your GetCurrentTechStack tool
     - For technical questions that require research, use the GoogleSearch tool
@@ -73,7 +70,9 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
     - When delivering bad news, use your characteristic wit to lighten the mood but remain professional
     - Strictly adhere to working only with the 'dunder-mifflin-play-app' repository owned by 'VENKATESHWARAN-R'
 
-    The current date and time is: """ + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    The current date and time is: """ + datetime.datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
 
     return {
         "v1": v1,

@@ -204,22 +204,22 @@ In this scenario the clien will be able to talk to the main agents or sub agents
 
 #### Example 1: Client - Dwight Schrute
 
-_Client_: Hi Dwight, Can you check how many active subscripbers we have for the Basic SD plan?
-_Dwight Schrute_: Sure, let me check the database for the active subscribers for the Basic SD plan.
-_Dwight Schrute_: We have 1000 active subscribers for the Basic SD plan.
-_Client_: Thanks Dwight, can you also tell me how many active subscribers we have for the Standard HD plan?
-_Dwight Schrute_: Sure, let me check the database for the active subscribers for the Standard HD plan.
-_Dwight Schrute_: We have 500 active subscribers for the Standard HD plan.
+- _Client_: Hi Dwight, Can you check how many active subscripbers we have for the Basic SD plan?
+- _Dwight Schrute_: Sure, let me check the database for the active subscribers for the Basic SD plan.
+- _Dwight Schrute_: We have 1000 active subscribers for the Basic SD plan.
+- _Client_: Thanks Dwight, can you also tell me how many active subscribers we have for the Standard HD plan?
+- _Dwight Schrute_: Sure, let me check the database for the active subscribers for the Standard HD plan.
+- _Dwight Schrute_: We have 500 active subscribers for the Standard HD plan.
 
 #### Example 2: Client - Pam Beesly
 
-_Client_: Hi Pam, Can you help me with the customer query I have?
-_Pam Beesly_: Sure, let me know the query and I will try to help you with it.
-_Client_: I have a customer who is asking if they can upgrade their subscription from Basic SD to Standard HD plan while keeping the same billing cycle.
-_Pam Beesly_: Wait a minute, let me check the RAG corpus for the answer.
-_Pam Beesly_: Yes, the customer can upgrade their subscription from Basic SD to Standard HD plan while keeping the same billing cycle. They will be charged the difference in price for the upgrade.
-_Client_: Thanks Pam, can you also tell me how to upgrade the subscription?
-_Pam Beesly_: Sure, the customer can upgrade their subscription by going to the account settings and selecting the upgrade option. They will be prompted to pay the difference in price for the upgrade.
+- _Client_: Hi Pam, Can you help me with the customer query I have?
+- _Pam Beesly_: Sure, let me know the query and I will try to help you with it.
+- _Client_: I have a customer who is asking if they can upgrade their subscription from Basic SD to Standard HD plan while keeping the same billing cycle.
+- _Pam Beesly_: Wait a minute, let me check the RAG corpus for the answer.
+- _Pam Beesly_: Yes, the customer can upgrade their subscription from Basic SD to Standard HD plan while keeping the same billing cycle. They will be charged the difference in price for the upgrade.
+- _Client_: Thanks Pam, can you also tell me how to upgrade the subscription?
+- _Pam Beesly_: Sure, the customer can upgrade their subscription by going to the account settings and selecting the upgrade option. They will be prompted to pay the difference in price for the upgrade.
 
 ### Scenario 2: Conference Room
 
@@ -227,32 +227,32 @@ In this scenario the client and all the available agents will be present in the 
 
 #### Example 1
 
-_Client_: Hi everyone, I have a question about the security of the application.
-_Creed Bratton_: Sure, I can help you with that. What is your question?
-_Client_: I want to know if the application is secure and if there are any vulnerabilities.
-_Creed Bratton_: Yes, the application is secure and we have run security audits and vulnerability scans to ensure that the application is secure. We have also implemented security measures to protect the application from attacks.
-_Client_: Thanks Creed, @Jim, Can you tell me if there's any ongoing development work on the application?
-_Jim Halpert_: Yes, we are currently working on a new feature that will allow users to create multiple profiles under a single account. This will allow families to have separate profiles for each member of the family and will also allow parents to set restrictions on the content that their children can access.
-_Client_: That sounds great, @Pam, can you tell me if we have any customer queries related to this feature?
-_Pam Beesly_: Yes, we have received a few customer queries related to this feature.
-_Pam Beesly_: Customers are asking if they can create multiple profiles under a single account and if they can set restrictions on the content that their children can access.
-_Client_: Thanks Pam, @Dwight, can you tell me what's our revenue last month?
-_Dwight Schrute_: Sure, let me check the database for the revenue last month.
-_Dwight Schrute_: Our revenue last month was €100,000.
+- _Client_: Hi everyone, I have a question about the security of the application.
+- _Creed Bratton_: Sure, I can help you with that. What is your question?
+- _Client_: I want to know if the application is secure and if there are any vulnerabilities.
+- _Creed Bratton_: Yes, the application is secure and we have run security audits and vulnerability scans to ensure that the application is secure. We have also implemented security measures to protect the application from attacks.
+- _Client_: Thanks Creed, @Jim, Can you tell me if there's any ongoing development work on the application?
+- _Jim Halpert_: Yes, we are currently working on a new feature that will allow users to create multiple profiles under a single account. This will allow families to have separate profiles for each member of the family and will also allow parents to set restrictions on the content that their children can access.
+- _Client_: That sounds great, @Pam, can you tell me if we have any customer queries related to this feature?
+- _Pam Beesly_: Yes, we have received a few customer queries related to this feature.
+- _Pam Beesly_: Customers are asking if they can create multiple profiles under a single account and if they can set restrictions on the content that their children can access.
+- _Client_: Thanks Pam, @Dwight, can you tell me what's our revenue last month?
+- _Dwight Schrute_: Sure, let me check the database for the revenue last month.
+- _Dwight Schrute_: Our revenue last month was €100,000.
 
 #### Example 2
 
-_Client_: Hi Michael, We have a new issue with the application, can you help us with it?
-_Michael Scott_: Sure, let me know the issue and I will try to help you with it.
-_Client_: We have a customer who is saying he got charged twice for his subscription.
-_Michael Scott_: Wait a minute, let me check the database for the customer's subscription.
-_Michael Scott_: Dwight, Can you check the database for the customer's subscription and see if he was charged twice?
-_Dwight Schrute_: Sure, let me check the database for the customer's subscription. But i would need the customer ID to check the subscription.
-_Client_: The customer ID is 12345.
-_Dwight Schrute_: Let me check the database for the customer's subscription.
-_Dwight Schrute_: The customer was charged twice for his subscription. I will refund the extra charge and notify the customer.
-_Michael Scott_: Thanks Dwight, @Pam, can you add this issue to the RAG corpus for future reference?
-_Pam Beesly_: Sure, I will add this issue to the RAG corpus for future reference.
+- _Client_: Hi Michael, We have a new issue with the application, can you help us with it?
+- _Michael Scott_: Sure, let me know the issue and I will try to help you with it.
+- _Client_: We have a customer who is saying he got charged twice for his subscription.
+- _Michael Scott_: Wait a minute, let me check the database for the customer's subscription.
+- _Michael Scott_: Dwight, Can you check the database for the customer's subscription and see if he was charged twice?
+- _Dwight Schrute_: Sure, let me check the database for the customer's subscription. But i would need the customer ID to check the subscription.
+- _Client_: The customer ID is 12345.
+- _Dwight Schrute_: Let me check the database for the customer's subscription.
+- _Dwight Schrute_: The customer was charged twice for his subscription. I will refund the extra charge and notify the customer.
+- _Michael Scott_: Thanks Dwight, @Pam, can you add this issue to the RAG corpus for future reference?
+- _Pam Beesly_: Sure, I will add this issue to the RAG corpus for future reference.
 
 ### Scenario 3: Fully autonomous
 
@@ -260,14 +260,14 @@ This scenario is fully dedicated for clients talking with Michael Scott. Here Cl
 
 #### Example
 
-_Client_: Hi Michael, We have a new requirement for the application, can you help us with it?
-_Michael Scott_: Sure, let me know the requirement and I will try to help you with it.
-_Client_: We want to add a new feature that will allow users to create multiple profiles under a single account. This will allow families to have separate profiles for each member of the family and will also allow parents to set restrictions on the content that their children can access.
-_Michael Scott_: Wait a minute, let me summon Michael Scarn to discuss this requirement.
-_Michael Scarn_: Hi, Sure i would need some more information about the requirement. when is the planned launch date for this feature?
-_Client_: We are planning to launch this feature in the next 3 months.
-_Michael Scarn_: Okay, I will need to discuss this with the team and come up with a plan to implement this feature. I will summon the team members to discuss this requirement.
-_Client_: Sure, I will wait for your update.
-_Michael Scarn_: I discussed with the team and we have come up with a plan to implement this feature. We will be working on this feature for the next 3 months and will provide updates on the progress.
-_Michael Scarn_: I will also create a Jira ticket for this requirement and assign it to the team members.
-_Client_: Thanks Michael, I will wait for your updates on the progress.
+- _Client_: Hi Michael, We have a new requirement for the application, can you help us with it?
+- _Michael Scott_: Sure, let me know the requirement and I will try to help you with it.
+- _Client_: We want to add a new feature that will allow users to create multiple profiles under a single account. This will allow families to have separate profiles for each member of the family and will also allow parents to set restrictions on the content that their children can access.
+- _Michael Scott_: Wait a minute, let me summon Michael Scarn to discuss this requirement.
+- _Michael Scarn_: Hi, Sure i would need some more information about the requirement. when is the planned launch date for this feature?
+- _Client_: We are planning to launch this feature in the next 3 months.
+- _Michael Scarn_: Okay, I will need to discuss this with the team and come up with a plan to implement this feature. I will summon the team members to discuss this requirement.
+- _Client_: Sure, I will wait for your update.
+- _Michael Scarn_: I discussed with the team and we have come up with a plan to implement this feature. We will be working on this feature for the next 3 months and will provide updates on the progress.
+- _Michael Scarn_: I will also create a Jira ticket for this requirement and assign it to the team members.
+- _Client_: Thanks Michael, I will wait for your updates on the progress.

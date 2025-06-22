@@ -26,10 +26,8 @@ root_agent = LlmAgent(
             ),
             tool_filter=[
                 "get_application_architecture",
-                "get_application_design",
-                "get_implementation_details",
-                "get_contact_points"
+                "get_contact_information",
             ],
-        )
+        ),
     ],
 )

@@ -24,7 +24,9 @@ root_agent = LlmAgent(
                 url=settings.mcp_server_url,
                 timeout=60,
             ),
-            tool_filter=[],
+            tool_filter=[
+                'get_project_tech_stack',
+            ],
         )
     ],
 )

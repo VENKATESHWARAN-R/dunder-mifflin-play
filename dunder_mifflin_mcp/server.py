@@ -20,6 +20,11 @@ from dunder_mifflin_mcp.tools.william_charles_schneider.security_tools import (
     run_pen_test as _run_pen_test,
     run_vulnerability_scan as _run_vulnerability_scan,
 )
+from dunder_mifflin_mcp.tools.common.tools import (
+    get_project_tech_stack as _get_project_tech_stack,
+    get_application_architecture as _get_application_architecture,
+    get_contact_information as _get_contact_information,
+)
 
 
 # ---> Common Piece of code starts
@@ -183,6 +188,61 @@ def run_vulnerability_scan() -> Dict[str, Any]:
 
 # <--- Dummy Tools for Creed's sub agent wiiliam charles ends
 
+
+# --> Common Tools starts
+@mcp.tool()
+def get_project_tech_stack() -> Dict[str, Any]:
+    """
+    Get information about the project's technology stack.
+
+    This function analyzes the project structure and returns a dictionary with details
+    about the frontend, backend, database, and infrastructure technologies used in the
+    Dunder Mifflin Play application.
+
+    Returns:
+        Dict[str, Any]: A dictionary containing:
+            - status (str): 'success' if information was retrieved successfully, 'error' otherwise
+            - message (str): A message describing the result of the operation
+            - result (dict): A dictionary with tech stack details organized by category
+    """
+    return _get_project_tech_stack()
+
+
+@mcp.tool()
+def get_application_architecture() -> Dict[str, Any]:
+    """
+    Get information about the application's architecture.
+
+    This function analyzes the project structure and returns a dictionary with details
+    about the frontend, backend, database, and infrastructure technologies used in the
+    Dunder Mifflin Play application.
+
+    Returns:
+        Dict[str, Any]: A dictionary containing:
+            - status (str): 'success' if information was retrieved successfully, 'error' otherwise
+            - message (str): A message describing the result of the operation
+            - result (dict): A dictionary with architecture details organized by category
+    """
+    return _get_application_architecture()
+
+
+@mcp.tool()
+def get_contact_information() -> Dict[str, Any]:
+    """
+    Get contact information for the Dunder Mifflin Play project.
+
+    This function retrieves the contact information for the project team, including
+    email addresses and phone numbers.
+
+    Returns:
+        Dict[str, Any]: A dictionary containing:
+            - status (str): 'success' if information was retrieved successfully, 'error' otherwise
+            - message (str): A message describing the result of the operation
+            - result (dict): A dictionary with contact information details
+    """
+    return _get_contact_information()
+
+# <--- Common Tools ends
 
 # # Middleware to check API key for MCP endpoints
 # async def api_key_middleware(request: Request, call_next):

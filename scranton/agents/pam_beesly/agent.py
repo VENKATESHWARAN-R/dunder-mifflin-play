@@ -28,8 +28,7 @@ root_agent = LlmAgent(
                 timeout=60,
             ),
             tool_filter=[
-                "get_application_info",
-                "get_feature_info"
+                "get_project_tech_stack"
             ],
         )
     ],

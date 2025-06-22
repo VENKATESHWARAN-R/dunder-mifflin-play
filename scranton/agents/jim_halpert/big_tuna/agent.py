@@ -9,7 +9,6 @@ from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
 
 from jim_halpert.big_tuna.config import settings  # pylint: disable=E0401
-from jim_halpert.golden_face.agent import root_agent as golden_face_root_agent  # pylint: disable=E0401
 
 root_agent = LlmAgent(
     name="big_tuna",
@@ -18,7 +17,7 @@ root_agent = LlmAgent(
     else LiteLlm(model=settings.model_id),
     description=settings.agent_description,
     instruction=settings.agent_instruction,
-    sub_agents=[golden_face_root_agent],
+    sub_agents=[],
     tools=[
         MCPToolset(
             connection_params=StreamableHTTPConnectionParams(
@@ -34,6 +33,14 @@ root_agent = LlmAgent(
                 "create_or_update_file",
                 "list_branches",
                 "create_branch",
+                "push_files",
+                "create_pull_request",
+                "get_pull_request",
+                "list_pull_requests",
+                "get_pull_request_status",
+                "update_pull_request",
+                "request_copilot_review",
+                "get_file_contents",
                 "list_commits",
                 "get_commit",
                 "search_code",

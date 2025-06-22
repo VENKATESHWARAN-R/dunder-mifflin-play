@@ -73,7 +73,8 @@ ENV_VARS=(
   "GITHUB_MCP_URL=https://api.githubcopilot.com/mcp/"
   "ARTIFACT_SERVICE_URI=gs://dunder-mifflin-bucket"
   "TRACE_TO_CLOUD=true"
-  "GOOGLE_GENAI_USE_VERTEXAI=FALSE"
+  "GOOGLE_GENAI_USE_VERTEXAI=False"
+  "GOOGLE_CLOUD_LOCATION=$REGION"
   "GOOGLE_CLOUD_PROJECT=$PROJECT"
 )
 
