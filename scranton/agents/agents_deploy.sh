@@ -74,6 +74,7 @@ ENV_VARS=(
   "ARTIFACT_SERVICE_URI=gs://dunder-mifflin-bucket"
   "TRACE_TO_CLOUD=true"
   "GOOGLE_GENAI_USE_VERTEXAI=FALSE"
+  "GOOGLE_CLOUD_PROJECT=$PROJECT"
 )
 
 # Secrets for Agents

@@ -51,7 +51,7 @@ fi
 
 # Define service details
 SERVICE_NAME="temp-agency"
-CONTEXT_PATH="./services/temp_agency"
+CONTEXT_PATH="./app"
 IMAGE="$REGION-docker.pkg.dev/$PROJECT/$REPO/$SERVICE_NAME:latest"
 
 # Common Cloud Run flags for temp-agency
@@ -87,10 +87,10 @@ echo "🚀  Deploying $SERVICE_NAME to Cloud Run..."
 echo "gcloud run deploy $SERVICE_NAME --image $IMAGE ${TEMP_AGENCY_FLAGS[*]} ${ENV_VARS[*]}"
 echo "-------------------------------------------------- \n"
 
-gcloud run deploy "$SERVICE_NAME" \
-   --image "$IMAGE" \
-   "${TEMP_AGENCY_FLAGS[@]}" \
-   "${ENV_VARS[@]}"
+# gcloud run deploy "$SERVICE_NAME" \
+#    --image "$IMAGE" \
+#    "${TEMP_AGENCY_FLAGS[@]}" \
+#    "${ENV_VARS[@]}"
 
 echo "-------------------------------------------------- \n"
 echo "✅  $SERVICE_NAME deployed successfully!"
