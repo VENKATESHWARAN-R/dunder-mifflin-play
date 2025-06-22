@@ -12,11 +12,12 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     UV_SYSTEM_PYTHON=1
 
+COPY requirements.txt /app/requirements.txt
+# Install dependencies
+RUN uv pip install --no-cache-dir -r requirements.txt
+
 # Copy project files
 COPY . /app/app
-
-# Install dependencies using uv
-RUN uv pip install -e .
 
 # Expose the FastAPI port
 # Added port 8080 for the cloudrun, anyway it will ignore this instruction
