@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Chat with {{ agent_name|replace('_', ' ')|title }}{% endblock %}
+
+{% block content %}
+<header class="main-header">
+    <h1>Chat with {{ agent_name|replace('_', ' ')|title }}</h1>
+    <div>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Agents</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+    </div>
+</header>
+
+<div class="chat-layout">
+    <aside class="sessions-panel">
+        <h3>Chat Sessions</h3>
+        <button id="new-chat-btn" class="btn btn-new-chat">Start New Chat</button>
+        <div id="session-list">
+            <div class="loader"></div>
+        </div>
+    </aside>
+
+    <main class="chat-container">
+        <div id="chat-window" class="chat-window">
+            <div class="placeholder">Select a session or start a new chat.</div>
+        </div>
+        <div id="chat-input-area" class="chat-input-area" style="display: none;">
+            <textarea id="message-input" placeholder="Type your message here..." rows="3"></textarea>
+            <button id="send-btn" class="btn">Send</button>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // Pass server-side data to JavaScript
+        const AGENT_NAME = "{{ agent_name }}";
+        const USER_ID = "{{ session.user_id }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Entry point for the chat page JavaScript logic
+        document.addEventListener('DOMContentLoaded', () => {
+            initChatPage();
+        });
+    </script>
+{% endblock %}

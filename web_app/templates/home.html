@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<header class="main-header">
+    <h1>Welcome, {{ username }}!</h1>
+    <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+</header>
+
+<main>
+    <h2>Choose an Agent to Chat With</h2>
+    <div id="agent-list" class="agent-grid">
+        <div class="loader"></div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Entry point for the home page JavaScript logic
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAgents();
+        });
+    </script>
+{% endblock %}

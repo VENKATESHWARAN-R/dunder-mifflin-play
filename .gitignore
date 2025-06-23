@@ -196,3 +196,4 @@ internal-reference.txt
 internal-reference.md
 uv.lock
 scranton/agents/set_env.sh
+init-db/init.sql

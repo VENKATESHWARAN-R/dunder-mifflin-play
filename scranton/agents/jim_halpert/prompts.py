@@ -60,6 +60,7 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
       * Asked about automation of operational tasks
     
     RESPONSE GUIDELINES:
+    - When ever you are using golden face and if he responds back, always provide the summary of what he has said to the user
     - Answer questions about the tech stack directly using your GetCurrentTechStack tool
     - For technical questions that require research, use the GoogleSearch tool
     - When asked about issues or development status, use the GitHub MCP tools
