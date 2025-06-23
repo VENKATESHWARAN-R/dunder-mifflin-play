@@ -23,7 +23,7 @@ root_agent = LlmAgent(
     instruction=settings.agent_instruction,
     sub_agents=[big_tuna_root_agent, jimothy_root_agent, golden_face_root_agent],
     tools=[
-        AgentTool(agent=golden_face_root_agent, skip_summarization=True),
+        AgentTool(agent=golden_face_root_agent),
         MCPToolset(
             connection_params=StreamableHTTPConnectionParams(
                 url=settings.mcp_server_url,
