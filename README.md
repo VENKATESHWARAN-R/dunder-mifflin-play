@@ -2,6 +2,26 @@
 
 A multi-agent system built with Google's Agent Development Kit (ADK) that simulates "The Office" TV show characters working together on a subscription-based streaming service. This project demonstrates the power of agent-based systems where each character has specialized roles and capabilities.
 
+## Agent Architecture
+
+The project is organized as a hierarchy of agents, each with specialized capabilities and tools. The agent hierarchy is visualized below:
+
+### Agent Hierarchy Visualizations
+
+| Agent | Role | Hierarchy Visualization |
+|-------|------|-------------------------|
+| Michael Scott | Project Manager | ![Michael Scott Agent Hierarchy](./architecture/agent-hierarchies/michael_scott.png) |
+| Jim Halpert | Lead DevOps Engineer | ![Jim Halpert Agent Hierarchy](./architecture/agent-hierarchies/jim_halpert.png) |
+| Dwight Schrute | Database Administrator | ![Dwight Schrute Agent Hierarchy](./architecture/agent-hierarchies/dwight_schrute.png) |
+| Pam Beesly | Support Engineer | ![Pam Beesly Agent Hierarchy](./architecture/agent-hierarchies/pam_beesly.png) |
+| Creed Bratton | Security Specialist | ![Creed Bratton Agent Hierarchy](./architecture/agent-hierarchies/creed_bratton.png) |
+| Erin Hannon | Test Engineer | ![Erin Hannon Agent Hierarchy](./architecture/agent-hierarchies/erin_hannon.png) |
+| Holly Flax | HR Representative | ![Holly Flax Agent Hierarchy](./architecture/agent-hierarchies/holly_flax.png) |
+| Michael Scarn | Special Agent | ![Michael Scarn Agent Hierarchy](./architecture/agent-hierarchies/michael_scarn.png) |
+| Conference Room | Collaboration Space | ![Conference Room Agent Hierarchy](./architecture/agent-hierarchies/conference_room.png) |
+
+For detailed descriptions of each agent's role and capabilities, refer to the documentation in the [agent-hierarchies](./architecture/agent-hierarchies/) directory.
+
 ## Project Setup
 
 ### Prerequisites
@@ -94,11 +114,71 @@ Each agent operates as an individual unit capable of performing specialized task
 
 #### 2. Conference Room Mode
 
-This mode enables all agents to collaborate on complex problems simultaneously. In Conference Room mode, agents can:
+The Conference Room Orchestrator enables all agents to collaborate on complex problems simultaneously. This agent:
 
-- Share information and discuss requirements
-- Work together on solutions by leveraging each other's strengths
-- Provide comprehensive answers to complex questions
+- Facilitates communication between multiple specialized agents in a group setting
+- Delegates questions to the appropriate team member based on their expertise
+- Never provides direct answers, focusing solely on routing inquiries to the right agent
+- Maintains awareness of the team structure and each member's specialized knowledge
+- Creates a collaborative environment where agents can share information and work together
+- Defaults to Michael Scott for questions that don't clearly fit one agent's domain
+- Enables seamless transitions between agents when complex problems require multiple perspectives
+
+#### 3. Michael Scarn: Executive Boss Agent
+
+Michael Scarn serves as the main user-facing agent with these capabilities:
+
+- Operates as a comprehensive gateway agent that can access all specialized team members
+- Answers questions directly when possible but consults with specialized agents when needed
+- Maintains awareness of each team member's expertise and delegates accordingly
+- Uses specialized tools to communicate with Michael Scott, Dwight Schrute, Creed Bratton, Holly Flax, Pam Beesly, and Erin Hannon
+- Follows a structured delegation workflow, telling users which agent he's consulting
+- Integrates responses from specialized agents into comprehensive answers
+- Presents expert insights in a conversational, user-friendly manner
+- References his secret agent alter-ego occasionally with playful confidence
+- Serves as a one-stop interface for accessing the entire team's combined knowledge
+
+### Agent Hierarchy
+
+The Dunder-Mifflin-Play project features a hierarchical organization of agents with parent agents and their specialized sub-agents:
+
+#### Root-Level Agents
+
+1. **Michael Scott**: Project Manager overseeing the entire project and team coordination
+2. **Jim Halpert**: Lead DevOps Engineer for application development and technical infrastructure
+3. **Dwight Schrute**: Database Administrator managing customer and subscription data
+4. **Pam Beesly**: Support Engineer handling customer queries and documentation
+5. **Creed Bratton**: Security Specialist monitoring vulnerabilities and platform security
+6. **Erin Hannon**: Test Engineer ensuring application quality and bug-free code
+7. **Holly Flax**: HR Specialist handling temp recruitment and team structure
+8. **Michael Scarn**: Executive Boss Agent serving as main user-facing gateway
+9. **Conference Room**: Collaborative orchestrator for multi-agent discussions
+
+#### Sub-Agents
+
+- **Michael Scott's Sub-Agents**:
+  - *Michael The Magic*: Requirements Analysis Specialist breaking down complex tasks into detailed plans
+  - *Date Mike*: Jira Specialist converting plans into structured tickets with estimates
+
+- **Jim Halpert's Sub-Agents**:
+  - *Big Tuna*: Full Stack Specialist handling application development
+  - *Jimothy*: Operations Specialist managing GitHub workflows and deployments
+  - *Goldenface*: Task Breakdown Specialist organizing technical requirements into implementation plans
+
+- **Pam Beesly's Sub-Agents**:
+  - *Pamela*: Primary RAG Search Agent retrieving information from knowledge corpus
+  - *Pam Casso*: Meeting Documentation Specialist creating conversation summaries
+  - *Pam Cake*: Application Architecture Specialist providing technical details
+
+- **Creed Bratton's Sub-Agents**:
+  - *William Charles Schneider*: Security Audit Specialist performing penetration tests and vulnerability scans
+
+- **Holly Flax's Sub-Agents**:
+  - *Holly the Living Breathing Angel*: Team Member Models Specialist tracking pricing and projecting staffing costs
+
+#### External/Temp Agency Agents
+
+- **Ryan Howard**: Data Scientist available through the Temp Agency for specialized data tasks
 
 ### System Expandability
 
@@ -110,7 +190,35 @@ The project includes a "Temp Agency" model for dynamically adding new agents:
 - **Dynamic Discovery**: Holly can contact the Temp Agency to find new talent and retrieve their contact information
 - **Cross-Agent Communication**: Michael has tools to communicate with external agents like Ryan via the A2A protocol
 
-### Agent Capabilities
+## Screenshots
+
+### Web Interface
+
+The Dunder Mifflin Play system includes a web interface for interacting with the agents:
+
+![Home Page](./architecture/screenshots/home_page.png)
+
+### Agent Conversations
+
+Examples of conversations with different agents in the system:
+
+#### Michael Scott (Project Manager)
+
+![Michael Scott Conversation](./architecture/screenshots/michael_scott.png)
+
+#### Michael Scott using Agent-to-Agent Communication
+
+![Michael Scott A2A](./architecture/screenshots/michael_scott_a2a.png)
+
+#### Michael Scarn (Executive Boss Agent)
+
+![Michael Scarn Conversation](./architecture/screenshots/michael_scarn.png)
+
+#### Conference Room Mode
+
+![Conference Room Conversation](./architecture/screenshots/conference-room.png)
+
+## Agent Capabilities
 
 The capabilities of agents can be explored in their respective `prompts.py` files in the `scranton/agents` directory. Each agent has:
 
