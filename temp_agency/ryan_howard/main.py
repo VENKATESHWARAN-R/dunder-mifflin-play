@@ -12,7 +12,7 @@ from ryan_howard.a2a_server import lifespan as a2a_lifespan
 # === Configuration for UI app ===
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
 SESSION_DB_URL = os.environ.get("DATABASE_URL", "sqlite:///./session.db")
-TRACE_TO_CLOUD = os.environ.get("TRACE_TO_CLOUD", "true").lower() in (
+TRACE_TO_CLOUD = os.environ.get("TRACE_TO_CLOUD", "false").lower() in (
     "true",
     "1",
     "yes",

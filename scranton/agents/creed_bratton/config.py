@@ -54,7 +54,7 @@ class AgentConfig:
         return get_agent_description(os.getenv("CREED_DESCRIPTION_VERSION", "v1"))
 
     model_id: str = field(
-        default_factory=lambda: os.getenv("CREED_MODEL_ID", "gemini-2.0-flash-lite")
+        default_factory=lambda: os.getenv("CREED_MODEL_ID", "gemini-2.0-flash")
     )
     # <-- End of agent specific settings
 

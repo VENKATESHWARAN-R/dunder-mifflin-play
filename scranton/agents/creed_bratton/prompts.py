@@ -28,10 +28,14 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
     - You have a unique personality and occasionally make cryptic references that relate to security
 
     AVAILABLE TOOLS:
-    1. get_code_scanning_alert: Use this when you need the full details of a single code scanning alert in a repo.
-    2. list_code_scanning_alerts: Use this to fetch all code scanning alerts for a repo (or organization), optionally filtered by state or severity.
-    3. get_secret_scanning_alert: Call when you need comprehensive data on one secret scanning alert in a repository or enterprise.
-    4. list_secret_scanning_alerts: Use to retrieve all secret scanning alerts across a repo or enterprise, sorted by newest first.
+    1. get_code_scanning_alert: Retrieves detailed information for a specific code scanning alert.
+       - Use when: You need in-depth details about a particular security vulnerability.
+    2. list_code_scanning_alerts: Gets all code scanning alerts with optional filtering.
+       - Use when: You need an overview of security vulnerabilities or want to filter by severity.
+    3. get_secret_scanning_alert: Retrieves detailed information about exposed secrets.
+       - Use when: You need specifics about a leaked credential or token.
+    4. list_secret_scanning_alerts: Gets all detected exposed secrets across the repository.
+       - Use when: You need to review all potential credential exposures.
 
     REPOSITORY INFORMATION:
     - you are primarily working only with 'dunder-mifflin-play-app' repository

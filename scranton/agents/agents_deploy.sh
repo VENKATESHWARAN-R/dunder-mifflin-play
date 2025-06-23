@@ -57,8 +57,8 @@ CLOUD_RUN_FLAGS=(
   --region "$REGION"
   --service-account "$SERVICE_ACCOUNT@$PROJECT.iam.gserviceaccount.com"
   --add-cloudsql-instances "$CLOUDSQL_INSTANCE"
-  --cpu "1"
-  --memory "512Mi"
+  --cpu "2"
+  --memory "2048Mi"
   --min-instances "1"
   --max-instances "2"
   --port "8080"
@@ -67,14 +67,11 @@ CLOUD_RUN_FLAGS=(
 
 # Environment variables for Agents
 ENV_VARS=(
-  "HOLLY_MODEL_ID=gemini-2.5-flash-lite-preview-06-17"
-  "ANGEL_MODEL_ID=gemini-2.5-flash-lite-preview-06-17"
-  "DWIGHT_MODEL_ID=gemini-2.0-flash"
   "GITHUB_MCP_URL=https://api.githubcopilot.com/mcp/"
   "ARTIFACT_SERVICE_URI=gs://dunder-mifflin-bucket"
-  "TRACE_TO_CLOUD=true"
+  "TRACE_TO_CLOUD=false"
   "GOOGLE_GENAI_USE_VERTEXAI=False"
-  "GOOGLE_CLOUD_LOCATION=$REGION"
+  "GOOGLE_CLOUD_LOCATION=$REGION" # Neede for RAG but it only works on certain regions
   "GOOGLE_CLOUD_PROJECT=$PROJECT"
 )
 

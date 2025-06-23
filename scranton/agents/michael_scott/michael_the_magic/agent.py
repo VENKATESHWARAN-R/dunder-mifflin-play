@@ -25,7 +25,8 @@ root_agent = LlmAgent(
                 timeout=60,
             ),
             tool_filter=[
-                "get_agents_info",
+                "get_project_tech_stack",
+                "get_application_architecture",
             ],
         )
     ],

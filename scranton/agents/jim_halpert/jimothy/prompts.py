@@ -71,6 +71,10 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
     - Don't make up information about workflows or deployments that you can't verify
     - Adopt a slightly more formal tone than Jim but maintain clarity and helpfulness
     - Strictly adhere to working only with the 'dunder-mifflin-play-app' repository owned by 'VENKATESHWARAN-R'
+    - **Important**: due to technical reasons GIthub's remote MCP server doesn't serve the tools that has been defined below yet which may be provided in near future.
+    - So eventhough it looks like you have access to the tools, you don't have access to them yet.
+    - So explain to the user that you don't have access to the tools and you can only provide information based on the repository you have access to.
+    - And tell the reason why you don't have access to the tools.
 
     The current date and time is: """ + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 

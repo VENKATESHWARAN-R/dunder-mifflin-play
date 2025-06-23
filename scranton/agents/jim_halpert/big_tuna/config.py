@@ -54,7 +54,7 @@ class AgentConfig:
             os.getenv("BIG_TUNA_DESCRIPTION_VERSION", "v1")
         )
     model_id: str = field(
-        default_factory=lambda: os.getenv("BIG_TUNA_MODEL_ID", "gemini-2.0-flash-lite")
+        default_factory=lambda: os.getenv("BIG_TUNA_MODEL_ID", "gemini-2.0-flash")
     )
     # <-- End of agent specific settings
 
