@@ -27,10 +27,23 @@ async function loadAgents() {
             card.href = `/chat/${agent}`;
             card.className = 'agent-card';
             
+            // Get agent info from the global AGENT_INFO if available
+            const agentInfo = typeof AGENT_INFO !== 'undefined' && AGENT_INFO[agent] ? AGENT_INFO[agent] : {};
+            
+            // Use custom image if provided, otherwise fall back to agent name or placeholder
+            const imgPath = agentInfo.image 
+                ? `/static/images/${agentInfo.image}` 
+                : `/static/images/${agent}.png`;
+            
+            // Use custom description if provided, otherwise use default
+            const description = agentInfo.description 
+                ? agentInfo.description 
+                : "Chat with this helpful agent about various topics.";
+            
             card.innerHTML = `
-                <img src="/static/images/${agent}.png" alt="${agent}" onerror="this.src='/static/images/placeholder.png'">
+                <img src="${imgPath}" alt="${agent}" onerror="this.src='/static/images/placeholder.png'">
                 <h3>${agent.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
-                <p>Chat with this helpful agent about various topics.</p>
+                <p>${description}</p>
             `;
             agentListDiv.appendChild(card);
         });

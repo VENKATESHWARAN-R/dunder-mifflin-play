@@ -124,5 +124,6 @@ But the soul of the project remains the same
 
 ### Related Links
 
+- [dunder-mifflin-office](https://dunder-mifflin-office-852224482282.europe-north1.run.app): The web interface for interacting with the agents
 - [dunder-mifflin-play-app](https://github.com/VENKATESHWARAN-R/dunder-mifflin-play-app): The repository which contains the application code for the Dunder Mifflin Play project.
 - [dunder-mifflin-agents](https://dunder-mifflin-agents-852224482282.europe-north1.run.app): The endpoint url where this project is deployed.
