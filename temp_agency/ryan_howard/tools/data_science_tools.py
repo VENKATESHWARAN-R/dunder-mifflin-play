@@ -27,64 +27,60 @@ class DataScienceTools:
     def load_csv(
         self, file_path: str, drop_unnamed_index: Optional[bool] = None, **kwargs
     ) -> dict:
-        """Load a CSV file into the Memory for further processing.
+        """Load a CSV file into memory, supporting both local and GCS paths.
+
+        If `file_path` starts with 'gs://', downloads from GCS to a temp file.
 
         Args:
-            file_path (str): Path to the CSV file.
-            drop_unnamed_index (bool, optional): If True or empty string, automatically drop columns that appear to be
-                                     unnamed index columns (e.g., 'Unnamed: 0'). Default is True if None or empty string is provided.
-            **kwargs: Additional keyword arguments for pd.read_csv.
+            file_path (str): Local path or GCS URI (gs://bucket/path/file.csv).
+            drop_unnamed_index (bool, optional): Drop 'Unnamed:' index columns. Defaults to True.
+            **kwargs: Additional arguments passed to `pd.read_csv`.
 
         Returns:
-            dict: {
-                'status': 'success' or 'error',
-                'rows': number of rows loaded,
-                'columns': number of columns loaded,
-                'dropped_columns': list of columns that were automatically dropped (if any)
-            }
+            dict: status, row/column counts, dropped_columns list, or error message.
         """
-        # Set default value if None or empty string
+        # Default for dropping unnamed index
         if drop_unnamed_index is None or drop_unnamed_index == "":
             drop_unnamed_index = True
 
+        # Handle GCS URIs
+        local_path = file_path
+        if file_path.startswith("gs://"):
+            download_res = self.read_file_from_gcs(file_path)
+            if download_res.get("status") != "success":
+                return {"status": "error", "message": download_res.get("message")}
+            local_path = download_res["result"]["local_path"]
+
         try:
-            df = pd.read_csv(file_path, **kwargs)
+            # Read CSV from local path
+            df = pd.read_csv(local_path, **kwargs)
 
             dropped_columns = []
             if drop_unnamed_index:
-                # Identify potential index columns (columns with names starting with 'Unnamed:')
-                unnamed_cols = [
-                    col for col in df.columns if str(col).startswith("Unnamed:")
-                ]
-
-                # Check if the unnamed column contains sequential integers starting from 0 or 1
+                # Identify columns like 'Unnamed: *'
+                unnamed_cols = [c for c in df.columns if str(c).startswith("Unnamed:")]
                 for col in unnamed_cols:
-                    if len(df) > 0:
-                        col_values = df[col].dropna()
-                        if (
-                            len(col_values) > 0
-                            and pd.api.types.is_numeric_dtype(col_values)
-                            and (col_values.astype(int) == col_values).all()
-                            and (
-                                (col_values.astype(int) == range(len(col_values))).all()
-                                or (
-                                    col_values.astype(int)
-                                    == range(1, len(col_values) + 1)
-                                ).all()
-                            )
-                        ):
-                            # This column looks like an index column, drop it
-                            df = df.drop(columns=[col])
-                            dropped_columns.append(str(col))
+                    col_vals = df[col].dropna()
+                    if (
+                        len(col_vals) > 0
+                        and pd.api.types.is_numeric_dtype(col_vals)
+                        and (col_vals.astype(int) == col_vals).all()
+                        and (
+                            (col_vals.astype(int) == range(len(col_vals))).all()
+                            or (
+                                col_vals.astype(int) == range(1, len(col_vals) + 1)
+                            ).all()
+                        )
+                    ):
+                        df = df.drop(columns=[col])
+                        dropped_columns.append(col)
 
             self.df = df
-
             result = {"status": "success", "rows": df.shape[0], "columns": df.shape[1]}
-
             if dropped_columns:
                 result["dropped_columns"] = dropped_columns
-
             return result
+
         except Exception as e:
             return {"status": "error", "message": str(e)}
 

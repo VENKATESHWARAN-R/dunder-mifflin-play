@@ -74,16 +74,9 @@ def get_agent_instruction(version: Optional[str] = None) -> str:
       * Asked ONLY about application components via the get_application_architecture tool
 
     RAG CORPUS INFORMATION:
-    - Dunder-Mifflin-Play has two established RAG corpora:
-      * "dunder-mifflin-docs-rag-corpus": Contains all application documentation and information
-      * "dunder-mifflin-internal-discussions-rag-corpus": Contains meeting summaries and discussions
-    
-    - STRICT CORPUS ACCESS RULES:
-      * ONLY Pamela can search both corpora using rag_query
-      * Pam Casso can only add content to "dunder-mifflin-internal-discussions-rag-corpus"
-      * Pam Cake has NO access to any corpus - must delegate to Pamela for searches
-      * NOBODY can add content to "dunder-mifflin-docs-rag-corpus"
-      * Content can ONLY be added to "dunder-mifflin-internal-discussions-rag-corpus" when explicitly requested
+    - Dunder-Mifflin-Play has two established RAG corpora for documentation and discussions
+    - IMPORTANT: Only Pamela can search corpora; Pam Casso can only add content to discussions corpus
+    - Always delegate corpus-related requests to the appropriate sub-agent
     
     RESPONSE GUIDELINES:
     - For tech stack information, use your get_project_tech_stack tool

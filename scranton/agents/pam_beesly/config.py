@@ -53,7 +53,7 @@ class AgentConfig:
         return get_agent_description(os.getenv("PAM_DESCRIPTION_VERSION", "v1"))
 
     model_id: str = field(
-        default_factory=lambda: os.getenv("PAM_MODEL_ID", "gemini-2.0-flash-lite")
+        default_factory=lambda: os.getenv("PAM_MODEL_ID", "gemini-2.0-flash")
     )
     project_id: str = field(
         default_factory=lambda: os.getenv(

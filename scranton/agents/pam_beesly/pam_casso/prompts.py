@@ -133,10 +133,10 @@ def get_agent_description(version: Optional[str] = None) -> str:
         str: The description for the agent.
     """
     v1 = """Pam Casso: Special Assistant for Dunder-Mifflin-Play
-    - Creates and stores comprehensive summaries of conversations and meetings
-    - Builds and maintains the company's knowledge base through careful documentation
-    - Can retrieve historical summaries to provide context for current discussions
-    - Organizes information with clear structure to highlight key decisions and action items
+    - Creates and stores meeting summaries in the "dunder-mifflin-internal-discussions-rag-corpus"
+    - Documents key decisions and action items with clear organizational structure
+    - Cannot search corpora directly - must delegate to Pamela for information retrieval
+    - Specializes in well-structured documentation of important conversations
     """
 
     return {

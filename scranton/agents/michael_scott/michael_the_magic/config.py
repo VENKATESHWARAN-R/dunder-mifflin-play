@@ -53,7 +53,7 @@ class AgentConfig:
             os.getenv("MICHAEL_MAGIC_DESCRIPTION_VERSION", "v1")
         )
     model_id: str = field(
-        default_factory=lambda: os.getenv("MICHAEL_MAGIC_MODEL_ID", "gemini-2.0-flash-lite")
+        default_factory=lambda: os.getenv("MICHAEL_MAGIC_MODEL_ID", "gemini-2.5-flash")
     )
     # <-- End of agent specific settings
 
