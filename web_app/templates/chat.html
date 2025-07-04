@@ -33,6 +33,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- Include marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // Pass server-side data to JavaScript
         const AGENT_NAME = "{{ agent_name }}";

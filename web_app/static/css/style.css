@@ -221,6 +221,124 @@ body {
     color: var(--secondary-color);
 }
 
+/* --- Markdown Styling in Chat Messages --- */
+.message-content {
+    line-height: 1.5;
+}
+
+.message-content p {
+    margin: 0 0 10px 0;
+}
+
+.message-content p:last-child {
+    margin-bottom: 0;
+}
+
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+    margin: 10px 0 8px 0;
+    font-weight: bold;
+}
+
+.message-content h1 { font-size: 1.4em; }
+.message-content h2 { font-size: 1.3em; }
+.message-content h3 { font-size: 1.2em; }
+.message-content h4 { font-size: 1.1em; }
+.message-content h5 { font-size: 1.05em; }
+.message-content h6 { font-size: 1em; }
+
+.message-content ul,
+.message-content ol {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.message-content li {
+    margin-bottom: 4px;
+}
+
+.message-content blockquote {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-left: 4px solid #ddd;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-style: italic;
+}
+
+.message-content code {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+}
+
+.message-content pre {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+.message-content pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.message-content a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.message-content a:hover {
+    text-decoration: underline;
+}
+
+.message-content strong,
+.message-content b {
+    font-weight: bold;
+}
+
+.message-content em,
+.message-content i {
+    font-style: italic;
+}
+
+.message-content hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 12px 0;
+}
+
+.message-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.message-content th,
+.message-content td {
+    border: 1px solid #ddd;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.message-content th {
+    background-color: rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+/* Special styling for links in model messages */
+.model-message .message-content a {
+    color: #0066cc;
+    word-break: break-all;
+}
+
 .chat-input-area {
     display: flex;
     padding: 15px;

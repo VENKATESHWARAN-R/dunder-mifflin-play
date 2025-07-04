@@ -194,9 +194,6 @@ function appendMessage(text, role, author = 'user') {
     messageDiv.classList.add('chat-message');
     messageDiv.classList.add(role === 'user' ? 'user-message' : 'model-message');
     
-    // Sanitize text to prevent HTML injection
-    const textNode = document.createTextNode(text);
-    
     if (role === 'model') {
         const authorSpan = document.createElement('div');
         authorSpan.className = 'author';
@@ -204,7 +201,42 @@ function appendMessage(text, role, author = 'user') {
         messageDiv.appendChild(authorSpan);
     }
     
-    messageDiv.appendChild(textNode);
+    // Create content container
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    
+    if (role === 'model') {
+        // Parse markdown for model messages
+        try {
+            // Configure marked options for security
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                sanitize: false, // We'll handle sanitization manually
+                smartLists: true,
+                smartypants: true
+            });
+            
+            const htmlContent = marked.parse(text);
+            contentDiv.innerHTML = htmlContent;
+            
+            // Make links open in new tab and add security attributes
+            const links = contentDiv.querySelectorAll('a');
+            links.forEach(link => {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            });
+        } catch (error) {
+            console.error('Error parsing markdown:', error);
+            // Fallback to plain text if markdown parsing fails
+            contentDiv.textContent = text;
+        }
+    } else {
+        // User messages remain as plain text
+        contentDiv.textContent = text;
+    }
+    
+    messageDiv.appendChild(contentDiv);
     chatWindow.appendChild(messageDiv);
     chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll
 }

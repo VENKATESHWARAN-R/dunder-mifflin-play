@@ -449,5 +449,5 @@ def get_agent_info():
 
 
 if __name__ == "__main__":
-    logger.info("Starting Flask application on port 5001")
+    logger.info("Starting Flask application on port 8080")
     app.run(port=int(os.getenv("PORT", "8080")), host="0.0.0.0")
